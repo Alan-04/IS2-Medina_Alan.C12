@@ -15,15 +15,19 @@ class ConexionBD:
     def _inicializar(self):
         """Inicializa la conexión con SQLAlchemy (una sola vez)."""
         self.engine = create_engine("sqlite:///biblioteca.db", echo=False)
-        self.Session = sessionmaker(bind=self.engine)
-        Base.metadata.create_all(self.engine)  # crea tablas
+        # Evitar que SQLAlchemy expire los atributos al hacer commit,
+        # así los objetos devueltos conservan sus valores aunque la sesión se cierre.
+        self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
+        Base.metadata.create_all(self.engine)
 
     def obtener_sesion(self):
-        """Devuelve una nueva sesión."""
         return self.Session()
 
 
-# ====== MODELOS ======
+# =======================
+# MODELOS ORM
+# =======================
+
 class Libro(Base):
     __tablename__ = "libros"
 
@@ -32,7 +36,14 @@ class Libro(Base):
     autor = Column(String)
     disponible = Column(Boolean, default=True)
 
+    # 🔹 Relación hacia Prestamo
     prestamos = relationship("Prestamo", back_populates="libro")
+
+    def marcar_no_disponible(self):
+        self.disponible = False
+
+    def marcar_disponible(self):
+        self.disponible = True
 
 
 class Socio(Base):
@@ -42,6 +53,7 @@ class Socio(Base):
     nombre = Column(String)
     email = Column(String)
 
+    # 🔹 Relación hacia Prestamo
     prestamos = relationship("Prestamo", back_populates="socio")
 
 
@@ -54,5 +66,6 @@ class Prestamo(Base):
     fecha_prestamo = Column(Date)
     fecha_devolucion = Column(Date, nullable=True)
 
+    # 🔹 Relaciones hacia Libro y Socio
     libro = relationship("Libro", back_populates="prestamos")
     socio = relationship("Socio", back_populates="prestamos")
