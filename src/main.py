@@ -1,19 +1,20 @@
-from dominio.libro import Libro
-from dominio.socio import Socio
-from servicio.servicio_prestamos import ServicioPrestamos
+from datetime import date
+from src.conexion_bd import Libro, Socio
+from src.servicio.servicio_prestamos import ServicioPrestamos
 
-if __name__ == "__main__":
-    # Capa de Presentación / Ejemplo de uso
-    libro1 = Libro("Cien años de soledad", "Gabriel García Márquez")
-    socio1 = Socio("Alan Medina", "alan@example.com")
-
+def demo():
     servicio = ServicioPrestamos()
 
-    # Registrar préstamo
-    prestamo = servicio.registrar_prestamo(socio1, libro1)
-    print(f"Fecha de devolución: {prestamo.fecha_devolucion}")
-    print(f"¿Está vencido? {prestamo.esta_vencido()}")
+    libro = Libro(titulo="Cien años de soledad", autor="Gabriel García Márquez", disponible=True)
+    socio = Socio(nombre="Alan Medina", email="alan@example.com")
 
-    # Registrar devolución
-    servicio.registrar_devolucion(prestamo)
-    print(f"¿El libro '{libro1.titulo}' está disponible? {libro1.disponible}")
+    prestamo = servicio.registrar_prestamo(socio, libro)
+    print("Fecha préstamo:", prestamo.fecha_prestamo)
+    print("Fecha devolución calculada (ej.):", servicio.calcular_fecha_devolucion(prestamo))
+    print("¿Está vencido?", (date.today() > servicio.calcular_fecha_devolucion(prestamo)))
+
+    prestamo = servicio.registrar_devolucion(prestamo)
+    print(f"¿El libro '{prestamo.libro.titulo}' está disponible? {prestamo.libro.disponible}")
+
+if __name__ == "__main__":
+    demo()
