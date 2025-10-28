@@ -1,3 +1,6 @@
+# Diagrama UML - Sistema Biblioteca
+
+```mermaid
 classDiagram
     class ServicioPrestamos {
         +registrar_prestamo(socio: Socio, libro: Libro) : Prestamo
@@ -32,3 +35,4 @@ classDiagram
     ServicioPrestamos --> Libro : usa
     Socio --> Prestamo : realiza
     Prestamo --> Libro : contiene
+```

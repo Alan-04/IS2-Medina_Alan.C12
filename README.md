@@ -16,7 +16,7 @@ Este sistema te permite gestionar una biblioteca digital con funcionalidades, en
 - Lenguaje: Python
 - Patrón elegido para el problema: Singleton (acceso centralizado a la base de datos)
 - Estructura del proyecto:
-IS2-Medina_Alan.C12/
+```IS2-Medina_Alan.C12/
 ├── src/
 │   ├── __init__.py
 │   ├── conexion_bd.py
@@ -39,6 +39,8 @@ IS2-Medina_Alan.C12/
 ├── requirements.txt
 ├── .gitignore
 └── biblioteca.db
+```
+
 
 El desarrollo se basa en la **arquitectura en tres capas** y la aplicación del **patrón de diseño Singleton** para el acceso centralizado a la base de datos.
 
