@@ -42,28 +42,29 @@ Este sistema te permite gestionar una biblioteca digital con funcionalidades, en
 ```
 
 
-El desarrollo se basa en la **arquitectura en tres capas** y la aplicación del **patrón de diseño Singleton** para el acceso centralizado a la base de datos.
+El desarrollo se basa en la **arquitectura en tres capas**
+
+---
+## 🧱 Arquitectura en tres capas
+
+| **Capa** | **Artefactos / Elementos** | **Responsabilidad** | **Código Fuente** |
+|-----------|-----------------------------|----------------------|-------------------|
+| **Presentación** | Archivo principal `main.py`. | Es el punto de entrada del sistema. Se encarga de interactuar con el usuario y distribuir las operaciones a las demás capas. | `main.py` |
+| **Lógica de Negocio (Dominio)** | Clases de dominio (`libro.py`, `socio.py`, `prestamo.py`). Servicios de negocio (`servicio_prestamos.py`). Artefactos de validación y cálculo (por ejemplo, validación de disponibilidad o control de fechas). Diagramas UML de clases y dominio. | Contiene las reglas del negocio y la lógica interna del sistema (por ejemplo, control de disponibilidad, cálculo de fechas de devolución, registro de préstamos, etc.). Representa las entidades del dominio y coordina la interacción con la capa de datos. | `libro.py`, `socio.py`, `prestamo.py`, `servicio_prestamos.py` |
+| **Persistencia (SRC)** | Repositorio de conexión a la base de datos y clases asociadas. | Administra el almacenamiento, gestión y recuperación de los datos. Utiliza SQLAlchemy para manejar la conexión y las operaciones sobre la base de datos relacional. | `conexion_bd.py`, motor de base de datos `SQLAlchemy` |
+
+
 
 ---
 
-## 🏗️ Arquitectura en tres capas
-
-| **Capa** | **Responsabilidad** | **Ejemplo de archivo / clase** |
-|-----------|---------------------|--------------------------------|
-| **Presentación** | Interfaz con el usuario o punto de entrada del sistema. | `main.py` |
-| **Lógica de negocio (Dominio)** | Contiene las reglas del sistema y entidades. | `libro.py`, `socio.py`, `prestamo.py` |
-| **Datos (Persistencia)** | Administra el almacenamiento y acceso a la base de datos. | `conexion_bd.py`, `servicio_prestamos.py` |
-
----
-
-## 🧠 Patrón de Diseño Aplicado: Singleton
+## 🧠 Patrón de Diseño Aplicado: Singleton para el acceso centralizado a la base de datos.
 
 **Problema elegido:**  
 Se necesita una única conexión activa a la base de datos para evitar bloqueos o inconsistencias.
 - Descripción breve:
   El acceso a la base de datos debe ser único y consistente en toda la aplicación para evitar múltiples configuraciones de engine/session, datos inconsistentes y complicaciones en tests y despliegue.
 - Patrón elegido: Singleton
-- Justificación:
+- Explicación de la elección:
   La clase ConexionBD implementa Singleton para garantizar una única instancia que inicializa el engine y el sessionmaker. Así todas las capas usan la misma fuente de verdad (misma configuración de conexión y factory de sesiones), simplificando la gestión de la BD y las pruebas.
 
 **Ventajas:**  
@@ -72,7 +73,7 @@ Se necesita una única conexión activa a la base de datos para evitar bloqueos 
 - Facilita el mantenimiento y control de errores  
 
 **Instrucciones rápidas**
-1. Crear entorno virtual (opcional)
+1. Crear entorno virtual
    python -m venv .venv
    .\.venv\Scripts\activate
 
@@ -85,11 +86,9 @@ Se necesita una única conexión activa a la base de datos para evitar bloqueos 
 4. Probar conexión
    python test_conexion.py
 
-Archivos incluidos en la entrega
+Archivos:
 - src/ (código fuente, ConexionBD, servicios, dominio)
 - anexo/pruebas_unitarias.py (tests que pasan)
-- diagrama_uml.mmd (UML)
-- test_conexion.py (script de verificación)
-- .gitignore (excluye biblioteca.db)
-
-
+- diagrama_uml.md (UML)
+- test_conexion.py (test de la base de datos)
+- .gitignore (evita subir biblioteca.db)

@@ -15,18 +15,13 @@ class ConexionBD:
     def _inicializar(self):
         """Inicializa la conexión con SQLAlchemy (una sola vez)."""
         self.engine = create_engine("sqlite:///biblioteca.db", echo=False)
-        # Evitar que SQLAlchemy expire atributos al hacer commit (útil en tests)
         self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
         Base.metadata.create_all(self.engine)
 
     def obtener_sesion(self):
         return self.Session()
 
-
-# =======================
-# MODELOS ORM
-# =======================
-
+# MODELOS ORM:
 class Libro(Base):
     __tablename__ = "libros"
     __table_args__ = (UniqueConstraint('titulo', 'autor', name='uix_titulo_autor'),)

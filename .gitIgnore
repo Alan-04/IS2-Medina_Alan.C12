@@ -1,9 +1,9 @@
-# Python bytecode
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Environments
+# Entorno virtual
 .venv/
 venv/
 env/
@@ -15,24 +15,13 @@ env/
 *.sublime-project
 *.sublime-workspace
 
-# SQLite / DB / logs
+# Base de datos
 biblioteca.db
 *.db
-*.sqlite3
 *.log
 
-# Test / coverage
+# Test 
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Build / packaging
-build/
-dist/
-*.egg-info/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Misc

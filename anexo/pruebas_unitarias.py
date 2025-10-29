@@ -7,14 +7,12 @@ class TestSistemaBiblioteca(unittest.TestCase):
     def setUp(self):
         self.db = ConexionBD()
         self.session = self.db.obtener_sesion()
-
-        # Limpiar base de datos antes de cada prueba
         self.session.query(Libro).delete()
         self.session.query(Socio).delete()
         self.session.commit()
 
-        self.libro = Libro(titulo="El Principito", autor="Antoine de Saint-Exupéry", disponible=True)
-        self.socio = Socio(nombre="Lucía Pérez", email="lucia@example.com")
+        self.libro = Libro(titulo="Los juegos del hambre", autor="Suzanne Collins", disponible=True)
+        self.socio = Socio(nombre="Sergio Moles Montes", email="SergioMM@example.com")
 
         self.session.add_all([self.libro, self.socio])
         self.session.commit()
@@ -36,11 +34,9 @@ class TestSistemaBiblioteca(unittest.TestCase):
     def test_registrar_devolucion(self):
         prestamo = self.servicio.registrar_prestamo(self.socio, self.libro)
         prestamo_actualizado = self.servicio.registrar_devolucion(prestamo)
-        # comprobar usando el préstamo devuelto (tiene el libro cargado)
         self.assertTrue(prestamo_actualizado.libro.disponible)
 
     def tearDown(self):
-        # cerrar sesión y opcionalmente eliminar datos si quieres empezar limpio
         self.session.close()
 
 
